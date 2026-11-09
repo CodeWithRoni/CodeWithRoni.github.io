@@ -17,6 +17,13 @@ A modern, responsive portfolio for **Md. Amzad Hossain Roni**, built with **Reac
 
 The project showcase links to real repositories; the hero dashboard is a **decorative concept**, not a live product screenshot. The contact form has **no server-side submission**.
 
+## Portfolio portrait & contact channels
+
+- Professional portrait is served from `public/profile.webp` (an optimized version of the owner's provided photo).
+- Facebook: https://www.facebook.com/ahronibera
+- WhatsApp: https://wa.me/8801913354321
+- LinkedIn: intentionally unlinked until the owner provides the URL.
+
 ## Update your details
 
 Edit **\`src/data/portfolio.js\`** to change the name, bio, skills, projects, GitHub links, contact email and social profiles.

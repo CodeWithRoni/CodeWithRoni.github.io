@@ -12,9 +12,11 @@ export const profile = {
   github: "https://github.com/CodeWithRoni",
   githubUsername: "CodeWithRoni",
   email: "ahroni.usa@gmail.com",
-  facebook: "",
+  facebook: "https://www.facebook.com/ahronibera",
   linkedin: "",
-  whatsapp: "",
+  whatsapp: "https://wa.me/8801913354321",
+  whatsappDisplay: "+880 1913-354321",
+  photo: "/profile.webp",
 };
 
 export const navLinks = [

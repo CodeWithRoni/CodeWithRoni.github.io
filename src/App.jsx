@@ -100,50 +100,37 @@ function SectionTitle({ index, label, title, description }) {
   )
 }
 
-function DashboardPreview() {
-  const bars = [29, 48, 38, 66, 52, 82, 62, 73, 59, 94, 80, 100]
+function PortraitShowcase() {
   return (
-    <div className="visual-stage" aria-label="Decorative concept illustration of a modern software dashboard">
-      <div className="stage-orbit stage-orbit-one" aria-hidden="true" />
-      <div className="stage-orbit stage-orbit-two" aria-hidden="true" />
-      <span className="stage-star star-one" aria-hidden="true">✧</span>
-      <span className="stage-star star-two" aria-hidden="true">✦</span>
-      <div className="floating-badge float-react"><span className="floating-badge-dot teal" /> React / Next.js</div>
-      <div className="floating-badge float-platform"><Icon name="layers" size={16} /> Cross-platform</div>
-      <div className="dashboard-window">
-        <div className="window-top">
-          <div className="window-dots" aria-hidden="true"><i /><i /><i /></div>
-          <span>roni / workspace</span>
-          <span className="window-shape">✧</span>
+    <div className="portrait-stage">
+      <div className="portrait-aura" aria-hidden="true" />
+      <div className="portrait-orbit orbit-first" aria-hidden="true" />
+      <div className="portrait-orbit orbit-second" aria-hidden="true" />
+
+      <div className="portrait-frame">
+        <div className="portrait-photo-wrap">
+          <img
+            className="portrait-photo"
+            src={profile.photo}
+            alt={profile.name + ' — Full-Stack and Cross-Platform Software Developer'}
+            width="280"
+            height="336"
+            decoding="async"
+            fetchPriority="high"
+          />
         </div>
-        <div className="dashboard-body">
-          <div className="dashboard-side" aria-hidden="true">
-            <span className="dashboard-logo">R.</span>
-            <span className="side-item active" /><span className="side-item" /><span className="side-item" /><span className="side-item small" />
-            <span className="side-spacer" />
-            <span className="side-avatar">R</span>
-          </div>
-          <div className="dashboard-content">
-            <div className="dashboard-eyebrow">WORKSPACE / OVERVIEW <span>•••</span></div>
-            <div className="dashboard-greeting">Good ideas.<br /><em>Better software.</em></div>
-            <div className="dashboard-metrics">
-              <div><small>Product thinking</small><strong>01<span>↗</span></strong></div>
-              <div><small>Design system</small><strong>∞<span>✧</span></strong></div>
-            </div>
-            <div className="dashboard-graph">
-              <div className="graph-top"><span>Building momentum</span><b>+ Growth</b></div>
-              <div className="graph-bars">{bars.map((height, i) => <i key={i} style={{ height: height + '%' }} />)}</div>
-              <div className="graph-bottom"><span>RESEARCH</span><span>DESIGN</span><span>BUILD</span><span>SHIP</span></div>
-            </div>
-          </div>
+        <div className="portrait-frame-caption">
+          <span>DEVELOPER / BANGLADESH</span>
+          <strong>{profile.name}</strong>
+          <small>JavaScript-first. Built for every screen.</small>
         </div>
       </div>
-      <div className="terminal-window">
-        <div className="terminal-label"><span className="terminal-indicator" /> developer.js</div>
-        <div><span className="code-purple">const</span> developer = <span className="code-teal">'Roni'</span>;</div>
-        <div><span className="code-purple">const</span> passion = <span className="code-teal">'building'</span>;</div>
-        <div className="terminal-success">✓ ready to create.</div>
-      </div>
+
+      <div className="portrait-floating portrait-float-js"><strong>JS</strong><span>Primary language</span></div>
+      <div className="portrait-floating portrait-float-platform"><Icon name="layers" size={18} /><span>Web • Desktop • Mobile</span></div>
+      <div className="portrait-floating portrait-float-code"><span className="portrait-code-dot" /> Available for projects</div>
+      <span className="portrait-star portrait-star-one" aria-hidden="true">✳</span>
+      <span className="portrait-star portrait-star-two" aria-hidden="true">✦</span>
     </div>
   )
 }
@@ -174,7 +161,7 @@ function Hero() {
             </div>
           </div>
         </div>
-        <DashboardPreview />
+        <PortraitShowcase />
       </div>
       <a className="scroll-hint" href="#about"><span>SCROLL TO EXPLORE</span> <Icon name="down" size={16} /></a>
     </section>
@@ -206,6 +193,10 @@ function About() {
             <div className="about-large-quote">“Great software feels simple, even when the problem isn't.”</div>
             {about.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             <div className="about-location"><Icon name="location" size={18} /><span>{profile.location}</span></div>
+            <div className="about-signature">
+              <img src={profile.photo} alt="" width="54" height="64" loading="lazy" decoding="async" />
+              <div><strong>{profile.shortName}</strong><span>Full-Stack & Cross-Platform Developer</span></div>
+            </div>
           </div>
           <div className="principle-list" data-reveal>
             {principles.map((item) => (
@@ -341,10 +332,33 @@ function Contact() {
             <p>Have a project, business challenge, or interesting concept in mind? I'd love to hear about it.</p>
             <a href={'mailto:' + profile.email} className="contact-email"><span className="contact-email-icon"><Icon name="mail" size={20} /></span><span>{profile.email}</span><Icon name="diagonal" size={18} /></a>
             <div className="contact-socials">
-              <a href={profile.github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={18} /> GitHub <Icon name="diagonal" size={15} /></a>
-              {profile.linkedin && <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn <Icon name="diagonal" size={15} /></a>}
-              {profile.facebook && <a href={profile.facebook} target="_blank" rel="noopener noreferrer">Facebook <Icon name="diagonal" size={15} /></a>}
-              {profile.whatsapp && <a href={profile.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp <Icon name="diagonal" size={15} /></a>}
+              <a className="contact-social-link" href={profile.github} target="_blank" rel="noopener noreferrer">
+                <span className="social-icon github-icon"><Icon name="github" size={20} /></span>
+                <span><strong>GitHub</strong><small>Browse my code</small></span>
+                <Icon name="diagonal" size={17} />
+              </a>
+              <a className="contact-social-link" href={profile.facebook} target="_blank" rel="noopener noreferrer">
+                <span className="social-icon facebook-icon">f</span>
+                <span><strong>Facebook</strong><small>Connect with me</small></span>
+                <Icon name="diagonal" size={17} />
+              </a>
+              <a className="contact-social-link" href={profile.whatsapp} target="_blank" rel="noopener noreferrer">
+                <span className="social-icon whatsapp-icon">✆</span>
+                <span><strong>WhatsApp</strong><small>{profile.whatsappDisplay}</small></span>
+                <Icon name="diagonal" size={17} />
+              </a>
+              {profile.linkedin ? (
+                <a className="contact-social-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+                  <span className="social-icon linkedin-icon">in</span>
+                  <span><strong>LinkedIn</strong><small>Professional network</small></span>
+                  <Icon name="diagonal" size={17} />
+                </a>
+              ) : (
+                <div className="contact-social-link social-pending" title="LinkedIn profile will be added later">
+                  <span className="social-icon linkedin-icon">in</span>
+                  <span><strong>LinkedIn</strong><small>Link coming soon</small></span>
+                </div>
+              )}
             </div>
           </div>
           <form className="contact-form" onSubmit={sendMessage} data-reveal>
