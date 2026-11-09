@@ -1,45 +1,45 @@
-# Roni — Portfolio Website
+# CodeWithRoni — Developer Portfolio
 
-React (Vite) দিয়ে বানানো পোর্টফোলিও সাইট — **Modern Dark Purple** থিম।
-হোস্টিং: GitHub Pages (সম্পূর্ণ ফ্রি)। লাইভ লিংক: https://codewithroni.github.io/
+A modern, responsive portfolio for **Md. Amzad Hossain Roni**, built with **React 18 + Vite 5 + CSS** and deployed using **GitHub Pages**.
 
-## ✏️ নিজের তথ্য বদলানো
+**Live website:** https://codewithroni.github.io/
 
-শুধু একটা ফাইল এডিট করলেই হবে: `src/data/portfolio.js`
-- নাম, টাইটেল, ইমেইল, Facebook / LinkedIn / WhatsApp লিংক
-- প্রজেক্টের বর্ণনা, স্কিল — সব ওখানেই আছে
+## Design
 
-ছবি ব্যবহার করতে চাইলে: ছবিটা `public/profile.jpg` নামে রেখে আমাকে বললেই Hero সেকশনে বসিয়ে দেওয়া যাবে।
+- Midnight navy, violet and turquoise visual system
+- Animated, CSS-built product dashboard concept in the hero
+- Mobile-friendly navigation and responsive layout
+- JavaScript-first tech showcase and four-platform highlight
+- Filterable project gallery (Business / Web / Desktop)
+- Subtle scroll reveals, floating cards and moving technology rail
+- Respect for \`prefers-reduced-motion\`, keyboard navigation and focus states
+- Contact form that composes an email in the visitor's email application
 
-## 🚀 GitHub-এ লাইভ করার ধাপ (একবারই করতে হবে)
+The project showcase links to real repositories; the hero dashboard is a **decorative concept**, not a live product screenshot. The contact form has **no server-side submission**.
 
-1. GitHub-এ গিয়ে নতুন রিপো বানাও, নাম দাও ঠিক এটা: **CodeWithRoni.github.io**
-   (Public রাখবে, README/Gitignore কিছু যোগ করবে না — খালি রিপো)
-2. এই ফোল্ডারের সব ফাইল ওই রিপোতে আপলোড/পুশ করো:
-   ```bash
-   git init
-   git add .
-   git commit -m "My portfolio website"
-   git branch -M main
-   git remote add origin https://github.com/CodeWithRoni/CodeWithRoni.github.io.git
-   git push -u origin main
-   ```
-3. রিপোর **Settings → Pages**-এ যাও → Source হিসাবে **GitHub Actions** সিলেক্ট করো।
-4. ২-৩ মিনিট অপেক্ষা করো — Actions ট্যাবে সবুজ ✓ এলেই সাইট লাইভ:
-   👉 https://codewithroni.github.io/
+## Update your details
 
-এরপর থেকে যতবার `main` ব্রাঞ্চে পুশ করবে, সাইট নিজে নিজে আপডেট হয়ে যাবে।
+Edit **\`src/data/portfolio.js\`** to change the name, bio, skills, projects, GitHub links, contact email and social profiles.
 
-## 💻 নিজের কম্পিউটারে চালানো
+## Run locally
 
-```bash
-npm install
-npm run dev      # লোকাল প্রিভিউ
-npm run build    # প্রোডাকশন বিল্ড (dist ফোল্ডারে)
-```
+Requirements: Node.js 20+.
 
-## ⚠️ রিপোর নাম বদলালে
+\`\`\`bash
+npm ci
+npm run dev
+npm run build
+npm run preview
+\`\`\`
 
-রিপোর নাম `CodeWithRoni.github.io` না হয়ে অন্য কিছু (যেমন `portfolio`) হলে:
-- `vite.config.js`-এ `base: '/portfolio/'` করে দিতে হবে
-- লিংক হবে https://codewithroni.github.io/portfolio/
+## Deployment
+
+The workflow at \`.github/workflows/deploy.yml\` runs on pushes to \`main\`. It installs dependencies with \`npm ci\`, builds \`dist/\`, and publishes to GitHub Pages. Repository Settings → Pages should use **GitHub Actions** as its source.
+
+The user-site repository must remain named **\`CodeWithRoni.github.io\`**, with Vite \`base: '/'\`.
+
+## Tech
+
+React, Vite, CSS, JavaScript, GitHub Actions, GitHub Pages. Fonts are loaded from Google Fonts with system fallbacks.
+
+© Md. Amzad Hossain Roni.
