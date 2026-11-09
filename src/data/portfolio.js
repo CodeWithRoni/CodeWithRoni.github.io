@@ -13,7 +13,7 @@ export const profile = {
   githubUsername: "CodeWithRoni",
   email: "ahroni.usa@gmail.com",
   facebook: "https://www.facebook.com/ahronibera",
-  linkedin: "",
+  linkedin: "https://www.linkedin.com/in/md-amzad-hossain-roni-02b56037b",
   whatsapp: "https://wa.me/8801913354321",
   whatsappDisplay: "+880 1913-354321",
   photo: "/profile.webp",
