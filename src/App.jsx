@@ -71,7 +71,7 @@ function Navbar() {
     <header className={'site-nav' + (scrolled ? ' site-nav-scrolled' : '')}>
       <div className="container nav-inner">
         <a className="brand" href="#home" onClick={() => setOpen(false)} aria-label="CodeWithRoni, back to home">
-          <span className="brand-symbol">&lt;<span>/</span>&gt;</span>
+          <span className="brand-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"><path d="M11 9 5 16l6 7" /><path className="brand-slash" d="m19 7-6 18" /><path d="m23 9 6 7-6 7" /></svg></span>
           <span className="brand-name">codewith<span>roni</span><span className="brand-dot">.</span></span>
         </a>
         <button className="menu-button" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-controls="primary-navigation" aria-label={open ? 'Close menu' : 'Open menu'}>
@@ -287,7 +287,7 @@ function Projects() {
           ))}
         </div>
         <div className="project-grid">
-          {visibleProjects.map((project, index) => <ProjectCard key={project.name} project={project} index={projects.indexOf(project)} isWide={filter === 'All' && project.featured} />)}
+          {visibleProjects.map((project, index) => <ProjectCard key={project.name} project={project} index={projects.indexOf(project)} />)}
         </div>
       </div>
     </section>
