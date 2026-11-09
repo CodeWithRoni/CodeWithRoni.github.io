@@ -1,9 +1,12 @@
-name: Deploy Portfolio to GitHub Pages
+name: Deploy Portfolio and Nova Calc to GitHub Pages
 
 on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  # Automatically pick up changes from the separately maintained calculator repo.
+  schedule:
+    - cron: '*/15 * * * *'
 
 permissions:
   contents: read
@@ -17,30 +20,60 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
+      - name: Checkout portfolio
         uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
-      - name: Install dependencies
+      - name: Install portfolio dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build portfolio
         run: npm run build
+
+      - name: Checkout Nova Calc source
+        uses: actions/checkout@v4
+        with:
+          repository: CodeWithRoni/calculator-react
+          ref: main
+          path: calculator-source
+          persist-credentials: false
+
+      - name: Install and test Nova Calc
+        working-directory: calculator-source
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test
+          npm run lint
+
+      - name: Build Nova Calc for project URL
+        working-directory: calculator-source
+        run: npm run build:web
+
+      - name: Include calculator under /calculator-react/
+        shell: bash
+        run: |
+          mkdir -p dist/calculator-react
+          cp -R calculator-source/dist/. dist/calculator-react/
+          test -f dist/calculator-react/index.html
+          ls -lah dist/calculator-react/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload combined site artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy portfolio + calculator
         id: deployment
         uses: actions/deploy-pages@v4
