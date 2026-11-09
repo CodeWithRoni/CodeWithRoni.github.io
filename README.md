@@ -22,7 +22,7 @@ The project showcase links to real repositories; the hero dashboard is a **decor
 - Professional portrait is served from `public/profile.webp` (an optimized version of the owner's provided photo).
 - Facebook: https://www.facebook.com/ahronibera
 - WhatsApp: https://wa.me/8801913354321
-- LinkedIn: intentionally unlinked until the owner provides the URL.
+- LinkedIn: https://www.linkedin.com/in/md-amzad-hossain-roni-02b56037b
 
 ## Update your details
 
