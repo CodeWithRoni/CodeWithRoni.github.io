@@ -44,8 +44,10 @@ h1, h2, h3, .brand, .footer-brand { font-family: 'Space Grotesk', system-ui, san
 .site-nav-scrolled { background: rgba(9,12,21,.88); border-bottom: 1px solid var(--border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 12px 50px rgba(0,0,0,.14); }
 .nav-inner { min-height: 88px; display: flex; justify-content: space-between; align-items: center; gap: 30px; }
 .brand { text-decoration: none; display: inline-flex; align-items: center; gap: 11px; white-space: nowrap; }
-.brand-symbol { width: 43px; height: 43px; border: 1px solid rgba(179,160,255,.34); background: rgba(128,96,234,.14); border-radius: 13px; display: grid; place-items: center; font-size: 1.04rem; font-weight: 700; color: var(--teal); letter-spacing: -.17em; padding-right: 4px; }
-.brand-symbol span { color: #bda3ff; }
+.brand-symbol { width: 43px; height: 43px; flex: 0 0 43px; border: 1px solid rgba(179,160,255,.34); background: rgba(128,96,234,.14); border-radius: 13px; display: grid; place-items: center; color: var(--teal); }
+.brand-symbol svg { display: block; width: 27px; height: 27px; overflow: visible; }
+.brand-slash { stroke: #bda3ff; }
+
 .brand-name { font-size: 1.25rem; font-weight: 700; letter-spacing: -.06em; color: #fff; }
 .brand-name span { color: #b6a1ff; }
 .brand-name .brand-dot { color: var(--teal); }
@@ -220,14 +222,14 @@ h1, h2, h3, .brand, .footer-brand { font-family: 'Space Grotesk', system-ui, san
 .project-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
 .project-card { min-width: 0; overflow: hidden; border: 1px solid rgba(176,193,228,.13); border-radius: 22px; background: #131a29; transition: transform .3s,border-color .3s,box-shadow .3s; animation: card-pop .45s both; }
 .project-card:hover { transform: translateY(-5px); border-color: rgba(185,165,255,.44); box-shadow: 0 25px 62px rgba(0,0,0,.27); }
-.project-wide { grid-column: span 2; display: grid; grid-template-columns: .95fr 1.05fr; }
+
 .project-art { height: 235px; position: relative; isolation: isolate; overflow: hidden; display: grid; place-items: center; background: radial-gradient(circle at 78% 30%,var(--project-accent-2),transparent 68%), linear-gradient(140deg,#1b2540,#111929 70%); }
-.project-wide .project-art { height: 100%; min-height: 345px; }
+
 .art-grid { position: absolute; inset: 0; opacity: .4; background-image: linear-gradient(rgba(255,255,255,.085) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.085) 1px,transparent 1px); background-size: 36px 36px; mask-image: radial-gradient(circle,black 10%,transparent 78%); }
 .art-index { position: absolute; left: 24px; top: 23px; color: rgba(255,255,255,.61); font-size: .63rem; font-weight: 700; letter-spacing: .15em; }
 .project-mark { z-index: 2; display: grid; place-items: center; width: 118px; height: 118px; border-radius: 25px; border: 1px solid rgba(255,255,255,.25); color: white; font-family: 'Space Grotesk',sans-serif; font-size: 2.2rem; font-weight: 700; letter-spacing: -.08em; background: linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06)); box-shadow: 0 18px 65px rgba(0,0,0,.23),inset 0 1px rgba(255,255,255,.18); backdrop-filter: blur(12px); transform: rotate(-8deg); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .project-card:hover .project-mark { transform: rotate(0deg) translateY(-6px); }
-.project-wide .project-mark { width: 144px; height: 144px; font-size: 3rem; }
+
 .art-ring { position: absolute; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; pointer-events: none; }
 .art-ring-a { width: 260px; height: 260px; }
 .art-ring-b { width: 375px; height: 375px; }
@@ -235,7 +237,7 @@ h1, h2, h3, .brand, .footer-brand { font-family: 'Space Grotesk', system-ui, san
 .art-pill { display: inline-flex; gap: 8px; align-items: center; position: absolute; right: 20px; bottom: 21px; font-weight: 700; color: #f0f3ff; font-size: .66rem; letter-spacing: .12em; background: rgba(7,12,24,.44); border: 1px solid rgba(255,255,255,.20); border-radius: 99px; padding: 8px 12px; backdrop-filter: blur(10px); }
 .art-pill span { width: 6px; height: 6px; border-radius: 50%; background: var(--project-accent); }
 .project-info { padding: 30px 30px 27px; display: flex; flex-direction: column; }
-.project-wide .project-info { justify-content: center; padding: 48px; }
+
 .project-type { color: var(--project-accent); font-weight: 700; letter-spacing: .13em; font-size: .66rem; }
 .project-info h3 { font-size: clamp(1.32rem,2.1vw,1.72rem); letter-spacing: -.055em; margin: 11px 0 9px; }
 .project-info > p { color: #a6b2c8; font-size: .88rem; line-height: 1.74; margin-bottom: 22px; }
@@ -336,7 +338,7 @@ h1, h2, h3, .brand, .footer-brand { font-family: 'Space Grotesk', system-ui, san
 }
 @media (max-width: 680px) {
   .container { width: calc(100% - 36px); }
-  .brand-symbol { width: 39px; height: 39px; }
+  .brand-symbol { width: 39px; height: 39px; flex-basis: 39px; }
   .brand-name { font-size: 1.13rem; }
   .hero { padding-top: 121px; padding-bottom: 66px; }
   .status-pill { font-size: .66rem; gap: 7px; }
@@ -391,10 +393,10 @@ h1, h2, h3, .brand, .footer-brand { font-family: 'Space Grotesk', system-ui, san
   .projects-heading-line .section-heading { margin-bottom: 15px; }
   .all-projects { margin-bottom: 23px; }
   .project-grid { grid-template-columns: 1fr; }
-  .project-wide { display: block; grid-column: auto; }
-  .project-art,.project-wide .project-art { height: 235px; min-height: unset; }
-  .project-wide .project-mark { width: 118px; height: 118px; font-size: 2.2rem; }
-  .project-info,.project-wide .project-info { padding: 26px; }
+  
+  .project-art { height: 235px; min-height: unset; }
+  
+  .project-info { padding: 26px; }
   .service-row { grid-template-columns: 30px 1fr 42px; gap: 11px; padding: 26px 0; }
   .service-icon { width: 40px; height: 40px; border-radius: 12px; font-size: 1.26rem; }
   .service-copy h3 { font-size: 1.32rem; }
