@@ -168,10 +168,10 @@ function Hero() {
   )
 }
 
-const marqueeSkills = ['JAVASCRIPT', 'TYPESCRIPT', 'REACT', 'NEXT.JS', 'NODE.JS', 'EXPRESS', 'MONGODB', 'ELECTRON', 'PYTHON']
+const marqueeSkills = ['JAVASCRIPT', 'TYPESCRIPT', 'RUST', 'REACT', 'NEXT.JS', 'NODE.JS', 'SUPABASE', 'POSTGRESQL', 'TAURI', 'ELECTRON', 'FLUTTER', '.NET']
 function TechRail() {
   return (
-    <div className="tech-rail" aria-label="Technologies: JavaScript, TypeScript, React, Next.js, Node.js, Express, MongoDB, Electron, Python">
+    <div className="tech-rail" aria-label="Technologies: JavaScript, TypeScript, Rust, React, Next.js, Node.js, Supabase, PostgreSQL, Tauri, Electron, Flutter, .NET">
       <div className="tech-track">
         {[0, 1].map((part) => (
           <div className="tech-set" key={part} aria-hidden="true">
@@ -251,7 +251,7 @@ function ProjectCard({ project, index, isWide }) {
     <article className={'project-card' + (isWide ? ' project-wide' : '')} style={{ '--project-accent': project.accent, '--project-accent-2': project.accent2 }}>
       <div className="project-art" aria-hidden="true">
         <div className="art-grid" />
-        <span className="art-index">{String(index + 1).padStart(2, '0')} / 06</span>
+        <span className="art-index">{String(index + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span>
         <span className="project-mark">{project.mark}</span>
         <span className="art-pill"><span /> {project.visualLabel}</span>
         <div className="art-ring art-ring-a" /><div className="art-ring art-ring-b" />

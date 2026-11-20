@@ -9,7 +9,7 @@ A modern, responsive portfolio for **Md. Amzad Hossain Roni**, built with **Reac
 - Midnight navy, violet and turquoise visual system
 - Animated, CSS-built product dashboard concept in the hero
 - Mobile-friendly navigation and responsive layout
-- JavaScript-first tech showcase and four-platform highlight
+- JavaScript-first tech showcase and six-platform highlight
 - Filterable project gallery (Business / Web / Desktop)
 - Subtle scroll reveals, floating cards and moving technology rail
 - Respect for \`prefers-reduced-motion\`, keyboard navigation and focus states
