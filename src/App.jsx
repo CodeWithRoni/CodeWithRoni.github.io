@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   profile, navLinks, stats, about, principles, skillGroups, platforms,
-  projectFilters, projects, services
+  projectFilters, projects, services, heroRoles
 } from './data/portfolio'
 
 function Icon({ name, size = 18, strokeWidth = 1.8 }) {
@@ -19,6 +19,18 @@ function Icon({ name, size = 18, strokeWidth = 1.8 }) {
     check: <><path d="m5 12 4 4L19 6" /></>,
     sparkle: <><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2ZM19 17l.7 2.3L22 20l-2.3.7L19 23l-.7-2.3L16 20l2.3-.7L19 17Z" /></>,
     layers: <><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5" /></>,
+    windows: <><path d="M3 5.6 10.5 4.5v7H3ZM13 4.2 21 3v8.5h-8ZM3 12.5h7.5v7L3 18.4ZM13 12.5h8V21l-8-1.2Z" /></>,
+    laptop: <><rect x="4" y="5" width="16" height="11" rx="1.6" /><path d="M2 19.5h20" /></>,
+    terminal: <><rect x="3" y="4" width="18" height="16" rx="2.2" /><path d="m7.5 9.5 3 2.5-3 2.5M13 15h4" /></>,
+    phone: <><rect x="7" y="2.5" width="10" height="19" rx="2.6" /><path d="M11 18.2h2" /></>,
+    store: <><path d="M4 9.5h16L18.6 4H5.4ZM5.2 9.5V20h13.6V9.5M9.5 20v-5.5h5V20" /></>,
+    devices: <><rect x="2.5" y="4" width="14" height="10" rx="1.6" /><path d="M6 18h7" /><rect x="15.5" y="9" width="6" height="11" rx="1.6" /></>,
+    database: <><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8" /><path d="M4.5 5.5v13c0 1.6 3.4 2.8 7.5 2.8s7.5-1.2 7.5-2.8v-13M4.5 12c0 1.6 3.4 2.8 7.5 2.8s7.5-1.2 7.5-2.8" /></>,
+    layout: <><rect x="3" y="3.5" width="18" height="17" rx="2.2" /><path d="M3 9h18M9 9v11.5" /></>,
+    whatsapp: <><path d="M20.5 12a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.1-4.2A8.5 8.5 0 1 1 20.5 12Z" /><path d="M9.2 8.6c-.2 2.9 3.2 6.3 6.2 6.2l.9-1.5-2-.9-.9.8a4.2 4.2 0 0 1-2-2l.8-.9-.9-2Z" /></>,
+    facebook: <><path d="M14.5 3.5h-2.2A3.3 3.3 0 0 0 9 6.8V10H7v3.3h2v7.2h3.3v-7.2h2.3l.5-3.3h-2.8V7.5a1 1 0 0 1 1-1h1.2Z" /></>,
+    linkedin: <><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 10.5V17M8 7.4v.1M12 17v-6.5M12 13.5a2.5 2.5 0 0 1 5 0V17" /></>,
+    star: <><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" /></>,
   }
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -50,9 +62,102 @@ function useReveal() {
   }, [])
 }
 
+const prefersReducedMotion = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+function usePointerGlow() {
+  useEffect(() => {
+    const onMove = (event) => {
+      const card = event.target.closest && event.target.closest('.glow-card')
+      if (!card) return
+      const rect = card.getBoundingClientRect()
+      card.style.setProperty('--mx', (event.clientX - rect.left) + 'px')
+      card.style.setProperty('--my', (event.clientY - rect.top) + 'px')
+    }
+    document.addEventListener('pointermove', onMove, { passive: true })
+    return () => document.removeEventListener('pointermove', onMove)
+  }, [])
+}
+
+function useActiveSection() {
+  const [active, setActive] = useState('home')
+  useEffect(() => {
+    const sections = navLinks.map((item) => document.getElementById(item.id)).filter(Boolean)
+    if (!('IntersectionObserver' in window)) return
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) setActive(entry.target.id) })
+    }, { rootMargin: '-45% 0px -50% 0px' })
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
+  return active
+}
+
+function ScrollProgress() {
+  const bar = useRef(null)
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      if (bar.current) bar.current.style.transform = 'scaleX(' + (max > 0 ? window.scrollY / max : 0) + ')'
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll) }
+  }, [])
+  return <div className="scroll-progress" aria-hidden="true"><span ref={bar} /></div>
+}
+
+function Typewriter({ words }) {
+  const [index, setIndex] = useState(0)
+  const [text, setText] = useState(prefersReducedMotion() ? words[0] : '')
+  const [deleting, setDeleting] = useState(false)
+  useEffect(() => {
+    if (prefersReducedMotion()) return
+    const word = words[index % words.length]
+    let delay = deleting ? 32 : 62
+    if (!deleting && text === word) delay = 1700
+    if (deleting && text === '') delay = 260
+    const timer = setTimeout(() => {
+      if (!deleting && text === word) setDeleting(true)
+      else if (deleting && text === '') { setDeleting(false); setIndex((value) => value + 1) }
+      else setText(word.slice(0, text.length + (deleting ? -1 : 1)))
+    }, delay)
+    return () => clearTimeout(timer)
+  }, [text, deleting, index, words])
+  return <span className="typewriter" aria-live="off">{text}<i className="type-caret" aria-hidden="true" /></span>
+}
+
+function CountUp({ value }) {
+  const match = String(value).match(/^(\d+)(.*)$/)
+  const ref = useRef(null)
+  const [shown, setShown] = useState(match ? (prefersReducedMotion() ? Number(match[1]) : 0) : value)
+  useEffect(() => {
+    if (!match || prefersReducedMotion() || !('IntersectionObserver' in window)) return
+    const target = Number(match[1])
+    let frame
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      observer.disconnect()
+      const start = performance.now()
+      const tick = (now) => {
+        const progress = Math.min(1, (now - start) / 1400)
+        const eased = 1 - Math.pow(1 - progress, 3)
+        setShown(Math.round(target * eased))
+        if (progress < 1) frame = requestAnimationFrame(tick)
+      }
+      frame = requestAnimationFrame(tick)
+    }, { threshold: .6 })
+    if (ref.current) observer.observe(ref.current)
+    return () => { observer.disconnect(); cancelAnimationFrame(frame) }
+  }, [])
+  if (!match) return <strong ref={ref}>{value}</strong>
+  return <strong ref={ref}>{String(shown).padStart(match[1].length, '0')}{match[2]}</strong>
+}
+
 function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const active = useActiveSection()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -79,7 +184,7 @@ function Navbar() {
         </button>
         <nav className={'nav-links' + (open ? ' nav-open' : '')} id="primary-navigation" aria-label="Main navigation">
           {navLinks.map((item) => (
-            <a key={item.id} href={'#' + item.id} onClick={() => setOpen(false)}>{item.label}</a>
+            <a key={item.id} href={'#' + item.id} className={active === item.id ? 'nav-active' : undefined} aria-current={active === item.id ? 'true' : undefined} onClick={() => setOpen(false)}>{item.label}</a>
           ))}
           <a href={profile.github} className="nav-github" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
             GitHub <Icon name="diagonal" size={16} />
@@ -101,8 +206,21 @@ function SectionTitle({ index, label, title, description }) {
 }
 
 function PortraitShowcase() {
+  const stage = useRef(null)
+  function tilt(event) {
+    if (prefersReducedMotion() || event.pointerType === 'touch') return
+    const rect = stage.current.getBoundingClientRect()
+    const x = (event.clientX - rect.left) / rect.width - .5
+    const y = (event.clientY - rect.top) / rect.height - .5
+    stage.current.style.setProperty('--ry', (x * 12).toFixed(2) + 'deg')
+    stage.current.style.setProperty('--rx', (-y * 10).toFixed(2) + 'deg')
+  }
+  function reset() {
+    stage.current.style.setProperty('--ry', '0deg')
+    stage.current.style.setProperty('--rx', '0deg')
+  }
   return (
-    <div className="portrait-stage">
+    <div className="portrait-stage" ref={stage} onPointerMove={tilt} onPointerLeave={reset}>
       <div className="portrait-aura" aria-hidden="true" />
       <div className="portrait-orbit orbit-first" aria-hidden="true" />
       <div className="portrait-orbit orbit-second" aria-hidden="true" />
@@ -111,10 +229,12 @@ function PortraitShowcase() {
         <div className="portrait-photo-wrap">
           <img
             className="portrait-photo"
-            src={profile.photo}
+            src="/profile-800.webp"
+            srcSet="/profile-480.webp 480w, /profile-800.webp 800w, /profile-1100.webp 1100w"
+            sizes="(max-width: 680px) 250px, (max-width: 1130px) 345px, 390px"
             alt={profile.name + ' — Full-Stack and Cross-Platform Software Developer'}
-            width="280"
-            height="336"
+            width="800"
+            height="960"
             decoding="async"
             fetchPriority="high"
           />
@@ -127,36 +247,45 @@ function PortraitShowcase() {
       </div>
 
       <div className="portrait-floating portrait-float-js"><strong>JS</strong><span>Primary language</span></div>
-      <div className="portrait-floating portrait-float-platform"><Icon name="layers" size={18} /><span>Web • Desktop • Mobile</span></div>
+      <div className="portrait-floating portrait-float-platform"><Icon name="layers" size={18} /><span>6 platforms · 1 codebase</span></div>
       <div className="portrait-floating portrait-float-code"><span className="portrait-code-dot" /> Available for projects</div>
-      <span className="portrait-star portrait-star-one" aria-hidden="true">✳</span>
-      <span className="portrait-star portrait-star-two" aria-hidden="true">✦</span>
+      <span className="portrait-star portrait-star-one" aria-hidden="true"><Icon name="star" size={26} strokeWidth={1.6} /></span>
+      <span className="portrait-star portrait-star-two" aria-hidden="true"><Icon name="sparkle" size={20} strokeWidth={1.4} /></span>
     </div>
   )
 }
 
 function Hero() {
+  const hero = useRef(null)
+  function spotlight(event) {
+    const rect = hero.current.getBoundingClientRect()
+    hero.current.style.setProperty('--sx', (event.clientX - rect.left) + 'px')
+    hero.current.style.setProperty('--sy', (event.clientY - rect.top) + 'px')
+  }
   return (
-    <section className="hero" id="home">
+    <section className="hero" id="home" ref={hero} onPointerMove={spotlight}>
+      <div className="hero-spotlight" aria-hidden="true" />
+      <div className="hero-aurora" aria-hidden="true"><span /><span /><span /></div>
       <div className="hero-grid-bg" aria-hidden="true" />
       <div className="hero-glow hero-glow-a" aria-hidden="true" />
       <div className="hero-glow hero-glow-b" aria-hidden="true" />
       <div className="container hero-layout">
         <div className="hero-copy">
           <div className="status-pill"><span className="status-pulse" /> {profile.availability} <span className="status-divider">/</span> 🇧🇩 Bangladesh</div>
-          <p className="hero-intro">HEY, I'M <span>{profile.shortName.toUpperCase()}</span> <span className="intro-wave">✳</span></p>
+          <p className="hero-intro">HEY, I'M <span>{profile.shortName.toUpperCase()}</span> <span className="intro-wave">👋</span></p>
           <h1>Building digital<br />experiences that <span className="gradient-word">matter.</span></h1>
-          <p className="hero-role"><span className="role-spark">✦</span> {profile.title}</p>
+          <p className="hero-role"><span className="role-spark"><Icon name="sparkle" size={16} /></span> {profile.title}</p>
+          <p className="hero-typed">I build <Typewriter words={heroRoles} /></p>
           <p className="hero-description">{profile.tagline}</p>
           <div className="hero-buttons">
-            <a className="button button-primary" href="#projects">Explore my work <Icon name="diagonal" size={18} /></a>
+            <a className="button button-primary button-shine" href="#projects">Explore my work <Icon name="diagonal" size={18} /></a>
             <a className="button button-outline" href="#contact">Let's talk <Icon name="arrow" size={18} /></a>
           </div>
           <div className="hero-proof">
             <div className="proof-line" />
             <div className="proof-stack">
               {stats.map((item) => (
-                <div className="proof-item" key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>
+                <div className="proof-item" key={item.label}><CountUp value={item.value} /><span>{item.label}</span></div>
               ))}
             </div>
           </div>
@@ -175,7 +304,7 @@ function TechRail() {
       <div className="tech-track">
         {[0, 1].map((part) => (
           <div className="tech-set" key={part} aria-hidden="true">
-            {marqueeSkills.map((item) => <span key={item}><i>✳</i> {item}</span>)}
+            {marqueeSkills.map((item) => <span key={item}><i>◆</i> {item}</span>)}
           </div>
         ))}
       </div>
@@ -200,10 +329,10 @@ function About() {
           </div>
           <div className="principle-list" data-reveal>
             {principles.map((item) => (
-              <div className="principle" key={item.number}>
+              <div className="principle glow-card" key={item.number}>
                 <span className="principle-number">{item.number}</span>
                 <div><h3>{item.title}</h3><p>{item.detail}</p></div>
-                <span className="principle-star">✳</span>
+                <span className="principle-star"><Icon name="arrow" size={18} /></span>
               </div>
             ))}
           </div>
@@ -220,26 +349,28 @@ function Skills() {
         <SectionTitle index="02 / 05" label="THE TOOLKIT" title={<>Built with curiosity.<br /><span className="text-gradient">Powered by JavaScript.</span></>} description="The technologies I reach for to bring ideas to life." />
         <div className="skills-layout">
           <div className="javascript-feature" data-reveal>
-            <div className="js-top"><span>PRIMARY LANGUAGE</span><span className="js-star">✳</span></div>
+            <div className="js-top"><span>PRIMARY LANGUAGE</span><span className="js-star"><Icon name="sparkle" size={24} strokeWidth={1.5} /></span></div>
             <div className="js-large">JS<span>.</span></div>
             <h3>JavaScript is my home base.</h3>
             <p>From expressive interfaces to business logic and desktop applications — one language, so many possibilities.</p>
             <span className="js-bottom">FULL-STACK <b>◆</b> CROSS-PLATFORM</span>
           </div>
-          <div className="skills-grid">
+          <div className="skills-col"><div className="skills-grid">
             {skillGroups.map((group) => (
-              <article className="skill-card" key={group.title} data-reveal>
-                <div className="skill-card-head"><span className="skill-number">{group.number} /</span><span className="skill-symbol">{group.icon}</span></div>
+              <article className="skill-card glow-card" key={group.title} data-reveal>
+                <div className="skill-card-head"><span className="skill-number">{group.number} /</span><span className="skill-symbol"><Icon name={group.icon} size={22} /></span></div>
                 <h3>{group.title}</h3>
                 <p>{group.description}</p>
                 <div className="skill-tags">{group.skills.map((skill) => <span key={skill} className={skill.includes('★') ? 'skill-tag primary-skill' : 'skill-tag'}>{skill.replace(' ★', '')}</span>)}</div>
               </article>
             ))}
+            </div>
+            <span className="swipe-hint">SWIPE TO EXPLORE <Icon name="arrow" size={14} /></span>
           </div>
         </div>
         <div className="platform-strip" data-reveal>
           <span className="platform-heading">BUILT FOR EVERY SCREEN <Icon name="arrow" size={17} /></span>
-          {platforms.map((platform) => <div className="platform-item" key={platform.name}><span>{platform.icon}</span><strong>{platform.name}</strong><small>{platform.detail}</small></div>)}
+          {platforms.map((platform) => <div className="platform-item" key={platform.name}><span><Icon name={platform.icon} size={24} strokeWidth={1.6} /></span><strong>{platform.name}</strong><small>{platform.detail}</small></div>)}
         </div>
       </div>
     </section>
@@ -248,7 +379,7 @@ function Skills() {
 
 function ProjectCard({ project, index, isWide }) {
   return (
-    <article className={'project-card' + (isWide ? ' project-wide' : '')} style={{ '--project-accent': project.accent, '--project-accent-2': project.accent2 }}>
+    <article className={'project-card glow-card' + (isWide ? ' project-featured' : '')} style={{ '--project-accent': project.accent, '--project-accent-2': project.accent2 }}>
       <div className="project-art" aria-hidden="true">
         <div className="art-grid" />
         <span className="art-index">{String(index + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span>
@@ -257,7 +388,7 @@ function ProjectCard({ project, index, isWide }) {
         <div className="art-ring art-ring-a" /><div className="art-ring art-ring-b" />
       </div>
       <div className="project-info">
-        <span className="project-type">{project.type}</span>
+        <span className="project-type">{isWide && <b className="featured-chip">FEATURED</b>}{project.type}</span>
         <h3>{project.name}</h3>
         <p>{project.description}</p>
         <div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
@@ -283,11 +414,11 @@ function Projects() {
         </div>
         <div className="filter-tabs" role="group" aria-label="Filter projects by type">
           {projectFilters.map((item) => (
-            <button type="button" key={item} className={'filter-tab' + (filter === item ? ' filter-active' : '')} aria-pressed={filter === item} onClick={() => setFilter(item)}>{item}</button>
+            <button type="button" key={item} className={'filter-tab' + (filter === item ? ' filter-active' : '')} aria-pressed={filter === item} onClick={() => setFilter(item)}>{item}<span className="filter-count">{item === 'All' ? projects.length : projects.filter((project) => project.category === item).length}</span></button>
           ))}
         </div>
-        <div className="project-grid">
-          {visibleProjects.map((project, index) => <ProjectCard key={project.name} project={project} index={projects.indexOf(project)} />)}
+        <div className="project-grid" key={filter}>
+          {visibleProjects.map((project, index) => <ProjectCard key={project.name} project={project} index={projects.indexOf(project)} isWide={filter === 'All' && project.featured} />)}
         </div>
       </div>
     </section>
@@ -299,15 +430,15 @@ function Services() {
     <section className="section section-services" id="services">
       <div className="container">
         <SectionTitle index="04 / 05" label="WHAT I CAN CREATE" title={<>From your first idea<br />to <span className="text-gradient">the finished product.</span></>} description="Practical development for meaningful problems." />
-        <div className="service-list">
+        <div className="service-grid">
           {services.map((service) => (
-            <div className="service-row" key={service.number} data-reveal>
-              <span className="service-number">{service.number}</span>
+            <div className="service-card glow-card" key={service.number} data-reveal>
+              <div className="service-head"><div className="service-icon"><Icon name={service.icon} size={26} strokeWidth={1.6} /></div><span className="service-number">{service.number}</span></div>
               <div className="service-copy"><h3>{service.title}</h3><p>{service.description}</p><div className="service-tags">{service.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
-              <div className="service-icon">{service.icon}</div>
             </div>
           ))}
         </div>
+        <span className="swipe-hint">SWIPE TO EXPLORE <Icon name="arrow" size={14} /></span>
       </div>
     </section>
   )
@@ -338,18 +469,18 @@ function Contact() {
                 <Icon name="diagonal" size={17} />
               </a>
               <a className="contact-social-link" href={profile.facebook} target="_blank" rel="noopener noreferrer">
-                <span className="social-icon facebook-icon">f</span>
+                <span className="social-icon facebook-icon"><Icon name="facebook" size={19} /></span>
                 <span><strong>Facebook</strong><small>Connect with me</small></span>
                 <Icon name="diagonal" size={17} />
               </a>
               <a className="contact-social-link" href={profile.whatsapp} target="_blank" rel="noopener noreferrer">
-                <span className="social-icon whatsapp-icon">✆</span>
+                <span className="social-icon whatsapp-icon"><Icon name="whatsapp" size={19} /></span>
                 <span><strong>WhatsApp</strong><small>{profile.whatsappDisplay}</small></span>
                 <Icon name="diagonal" size={17} />
               </a>
               {profile.linkedin ? (
                 <a className="contact-social-link" href={profile.linkedin} target="_blank" rel="noopener noreferrer">
-                  <span className="social-icon linkedin-icon">in</span>
+                  <span className="social-icon linkedin-icon"><Icon name="linkedin" size={19} /></span>
                   <span><strong>LinkedIn</strong><small>Professional network</small></span>
                   <Icon name="diagonal" size={17} />
                 </a>
@@ -361,8 +492,8 @@ function Contact() {
               )}
             </div>
           </div>
-          <form className="contact-form" onSubmit={sendMessage} data-reveal>
-            <div className="form-top"><span>START A CONVERSATION</span><span className="form-decor">✳</span></div>
+          <form className="contact-form glow-card" onSubmit={sendMessage} data-reveal>
+            <div className="form-top"><span><i className="status-pulse" /> START A CONVERSATION</span><span className="form-decor"><Icon name="mail" size={22} /></span></div>
             <div className="form-double">
               <label htmlFor="contact-name">Your name<input id="contact-name" name="name" autoComplete="name" placeholder="What should I call you?" required value={form.name} onChange={(e) => setForm((value) => ({ ...value, name: e.target.value }))} /></label>
               <label htmlFor="contact-email">Email address<input id="contact-email" name="email" autoComplete="email" type="email" placeholder="you@example.com" required value={form.email} onChange={(e) => setForm((value) => ({ ...value, email: e.target.value }))} /></label>
@@ -383,7 +514,15 @@ function Footer() {
       <div className="container footer-content">
         <a href="#home" className="footer-brand">codewith<span>roni</span><b>.</b></a>
         <p>© {new Date().getFullYear()} {profile.name}. Crafted with care & JavaScript.</p>
-        <a href="#home" className="back-top">Back to top ↑</a>
+        <div className="footer-right">
+          <div className="footer-socials">
+            <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Icon name="github" size={18} /></a>
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Icon name="linkedin" size={18} /></a>
+            <a href={profile.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Icon name="facebook" size={18} /></a>
+            <a href={profile.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><Icon name="whatsapp" size={18} /></a>
+          </div>
+          <a href="#home" className="back-top">Back to top ↑</a>
+        </div>
       </div>
     </footer>
   )
@@ -391,8 +530,10 @@ function Footer() {
 
 export default function App() {
   useReveal()
+  usePointerGlow()
   return (
     <>
+      <ScrollProgress />
       <a href="#main" className="skip-link">Skip to content</a>
       <Navbar />
       <main id="main">

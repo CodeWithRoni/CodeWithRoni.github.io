@@ -48,33 +48,41 @@ export const principles = [
 
 export const skillGroups = [
   {
-    number: "01", icon: "⌘", title: "Languages",
+    number: "01", icon: "code", title: "Languages",
     description: "The building blocks behind everything I create.",
     skills: ["JavaScript ★", "TypeScript", "Rust", "Dart", "C#", "Python", "HTML5", "CSS3"],
   },
   {
-    number: "02", icon: "◈", title: "Frontend",
+    number: "02", icon: "layout", title: "Frontend",
     description: "Interfaces that look good and feel effortless.",
     skills: ["React", "Next.js", "Vite", "Tailwind CSS", "Redux", "Responsive UI", "UI/UX"],
   },
   {
-    number: "03", icon: "▣", title: "Backend & Data",
+    number: "03", icon: "database", title: "Backend & Data",
     description: "Application logic, APIs and data that power products.",
     skills: ["Node.js", "Express.js", "Supabase", "PostgreSQL", "Neon", "MongoDB", "SQLite", "Turso"],
   },
   {
-    number: "04", icon: "▤", title: "Platforms & Tools",
+    number: "04", icon: "layers", title: "Platforms & Tools",
     description: "From the browser to native desktop and mobile shells.",
     skills: ["Tauri", "Electron", "Capacitor", "Flutter", ".NET / WinPE", "Google Apps Script", "GitHub Actions"],
   },
 ];
 
 export const platforms = [
-  { icon: "🌐", name: "Web", detail: "Apps & storefronts" },
-  { icon: "🖥", name: "Windows", detail: "Installers & utilities" },
-  { icon: "⌘", name: "macOS", detail: "Desktop experiences" },
-  { icon: "🐧", name: "Linux", detail: "DEB & AppImage" },
-  { icon: "▯", name: "Android & iOS", detail: "Mobile apps" },
+  { icon: "globe", name: "Web", detail: "Apps & storefronts" },
+  { icon: "windows", name: "Windows", detail: "Installers & utilities" },
+  { icon: "laptop", name: "macOS", detail: "Desktop experiences" },
+  { icon: "terminal", name: "Linux", detail: "DEB & AppImage" },
+  { icon: "phone", name: "Android & iOS", detail: "Mobile apps" },
+];
+
+export const heroRoles = [
+  "POS & ERP systems for real shops.",
+  "e-commerce stores that sell.",
+  "desktop apps with Tauri & Rust.",
+  "mobile apps with Flutter.",
+  "one codebase for every screen.",
 ];
 
 export const projectFilters = ["All", "Business", "Web", "Desktop"];
@@ -108,6 +116,7 @@ export const projects = [
     visualLabel: "GARMENT RETAIL",
     accent: "#39dcc8",
     accent2: "#008f84",
+    featured: true,
   },
   {
     name: "GearGrid",
@@ -277,17 +286,17 @@ export const projects = [
 
 export const services = [
   {
-    number: "01", icon: "◧", title: "Full-Stack Web Products",
+    number: "01", icon: "globe", title: "Full-Stack Web Products",
     description: "Responsive websites, storefronts, dashboards and APIs — from interface to backend and payments.",
     tags: ["React", "Next.js", "Supabase"],
   },
   {
-    number: "02", icon: "▣", title: "Business Software",
+    number: "02", icon: "store", title: "Business Software",
     description: "Point of sale, inventory, ledgers, warranty tracking, e-commerce and custom workflows.",
     tags: ["POS", "Operations", "Automation"],
   },
   {
-    number: "03", icon: "⌘", title: "Cross-Platform Apps",
+    number: "03", icon: "devices", title: "Cross-Platform Apps",
     description: "Installable desktop and mobile apps — Windows, macOS, Linux, Android and iOS — from one shared codebase.",
     tags: ["Tauri", "Electron", "Flutter"],
   },
